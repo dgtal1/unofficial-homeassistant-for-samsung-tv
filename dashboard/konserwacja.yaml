@@ -1,0 +1,44 @@
+# Kafelek "Konserwacja" + podwidok. Dwa fragmenty do wklejenia w surowym edytorze dashboardu.
+# Aplikacja TV sama policzy opis kafelka: "N słaba bateria" (poziom <= 20% albo czujnik baterii w stanie "on")
+# i "N niedostępne urządzenia" (encje z podwidoku w stanie unavailable); czerwona ikona, gdy jest słaba bateria.
+# Gdy nic nie jest zgłoszone, opis to "Wszystko w porządku".
+# Podwidok jest rozpoznawany jako "Konserwacja", gdy zawiera czujniki z device_class: battery
+# i nie zawiera encji bezpieczeństwa (świateł może być najwyżej tyle, ile czujników baterii).
+
+# ---- 1) w widoku "Przegląd", w sekcji z kafelkami Podsumowań (obok Bezpieczeństwa) dodaj:
+- type: button
+  name: Konserwacja
+  icon: mdi:wrench
+  show_name: true
+  show_icon: true
+  tap_action:
+    action: navigate
+    navigation_path: /dashboard-dom/konserwacja
+
+# ---- 2) jako nowy widok na końcu listy `views:`:
+- title: Konserwacja
+  path: konserwacja
+  subview: true
+  back_path: /dashboard-dom/przeglad
+  type: sections
+  max_columns: 1
+  sections:
+    - cards:
+        - type: heading
+          heading: Baterie
+          heading_style: title
+        # ZMIEŃ: czujniki baterii (device_class: battery), dopisz kolejne według potrzeb
+        - type: tile
+          entity: sensor.zmien_bateria_1
+          name: Czujnik drzwi
+        - type: tile
+          entity: sensor.zmien_bateria_2
+          name: Czujnik okna
+    - cards:
+        - type: heading
+          heading: Niedostępne
+          heading_style: title
+        # ZMIEŃ: urządzenia, które mają być pilnowane pod kątem dostępności (dowolna encja)
+        - type: tile
+          entity: sensor.zmien_urzadzenie_1
+          name: Brama - moduł

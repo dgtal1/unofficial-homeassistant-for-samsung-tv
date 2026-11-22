@@ -1,0 +1,21 @@
+# Opcjonalne encje pomocnicze dla kafelków podsumowań (configuration.yaml lub Ustawienia -> Urządzenia -> Pomocnicy).
+# Kafelek "Bezpieczeństwo" robi się czerwony, gdy ten czujnik ma stan "on" (device_class: safety).
+template:
+  - binary_sensor:
+      - name: "Bezpieczeństwo"
+        unique_id: bezpieczenstwo_podsumowanie
+        device_class: safety
+        state: >
+          {{ is_state('lock.drzwi_wejsciowe', 'unlocked')
+             or is_state('binary_sensor.drzwi_taras', 'on')
+             or is_state('binary_sensor.furtka', 'on') }}
+  # Klimat: średnia temperatura z kilku czujników
+  - sensor:
+      - name: "Średnia temperatura"
+        unique_id: srednia_temperatura
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state: >
+          {{ [states('sensor.temp_biuro'), states('sensor.temp_kuchnia')]
+             | select('is_number') | map('float') | list | average | round(1, default=0) }}
+# Światła: Ustawienia -> Urządzenia -> Pomocnicy -> Utwórz -> Grupa -> Grupa świateł (wybierz wszystkie światła).

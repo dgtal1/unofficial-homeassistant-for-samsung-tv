@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Home Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="bg"></div>
+  <div id="app">
+    <header id="topbar">
+      <div id="tabs-wrap"><div id="tabs"></div></div>
+      <div id="topright">
+        <div id="banner"></div>
+        <div id="clock"><span id="clock-time"></span><span id="clock-date"></span></div>
+        <span id="status-dot" class="dot idle"></span>
+        <div id="btn-bell" class="iconbtn focusable" style="display:none"><span id="bell-ico"></span><span id="bell-badge"></span></div>
+        <div id="btn-settings" class="iconbtn focusable"></div>
+      </div>
+    </header>
+
+    <main id="viewport"><div id="content"></div></main>
+
+    <div id="toast"></div>
+
+    <div id="detail">
+      <div class="scrim"></div>
+      <div class="dcard">
+        <div class="dhead">
+          <div class="dico"></div>
+          <div class="dtxt"><div class="dname"></div><div class="dstate"></div></div>
+        </div>
+        <div class="dbody"></div>
+        <div class="dhint"><span class="dh-adj" data-i18n="detail.hintAdj"></span><span class="dh-back"><span class="dh-ico"></span><span class="dh-txt" data-i18n="common.closeLc"></span></span></div>
+      </div>
+    </div>
+
+    <div id="diag">
+      <div class="scrim"></div>
+      <div class="dcard">
+        <div class="dname" data-i18n="diag.title"></div>
+        <div class="diag-rows"></div>
+        <div class="diag-hint" data-i18n="diag.scrollHint"></div>
+        <div class="btn-row diag-btns">
+          <div id="diag-reload" class="btn focusable" data-i18n="common.reloadDashboard"></div>
+          <div id="diag-close" class="btn focusable" data-i18n="common.close"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="settings">
+      <div class="scrim"></div>
+      <div class="dcard">
+        <div class="dname" data-i18n="settings.title"></div>
+        <div class="setlist">
+          <div id="set-dashboard" class="setrow focusable"><span class="set-k" data-i18n="settings.dashboard"></span><span class="set-v"></span></div>
+          <div id="set-style" class="setrow focusable"><span class="set-k" data-i18n="settings.style"></span><span class="set-v"></span></div>
+          <div id="set-lang" class="setrow focusable"><span class="set-k" data-i18n="settings.language"></span><span class="set-v"></span></div>
+          <div id="set-diag" class="setrow focusable"><span class="set-k" data-i18n="settings.diag"></span><span class="set-v">›</span></div>
+          <div id="set-reload" class="setrow focusable"><span class="set-k" data-i18n="common.reloadDashboard"></span></div>
+          <div id="set-close" class="setrow focusable"><span class="set-k" data-i18n="common.close"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="picker">
+      <div class="scrim"></div>
+      <div class="dcard">
+        <div class="dname" data-i18n="picker.title"></div>
+        <div class="pick-sub"></div>
+        <div class="pick-list"></div>
+      </div>
+    </div>
+
+    <div id="notifs">
+      <div class="scrim"></div>
+      <div class="dcard">
+        <div class="dname" data-i18n="notifs.title"></div>
+        <div class="pick-sub"></div>
+        <div class="pick-list nt-list"></div>
+        <div class="dhint"><span class="dh-open" data-i18n="notifs.hintOpen"></span><span class="dh-back"><span class="dh-ico"></span><span class="dh-txt" data-i18n="common.closeLc"></span></span></div>
+      </div>
+    </div>
+
+    <div id="focus-ring"></div>
+
+    <div id="splash" class="show">
+      <div class="splash-title">Home Assistant</div>
+      <div class="splash-sub"></div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/util.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/ha.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/entity.js"></script>
+  <script src="js/generated.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/detail.js"></script>
+  <script src="js/dialogs.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

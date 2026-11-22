@@ -1,0 +1,451 @@
+# Dashboard "Przegląd" w stylu Apple Home – układ jak widok generowany w aplikacji TV.
+#
+# JAK UŻYĆ
+# 1. HA: Ustawienia -> Dashboardy -> Dodaj dashboard (pusty). Zapamiętaj jego "URL" (np. dashboard-dom).
+# 2. Otwórz go, ... -> Edytuj dashboard -> ... -> "Surowy edytor konfiguracji" i wklej całość.
+# 3. Zamień WSZĘDZIE "/dashboard-dom/" na "/<twój-url>/" (dla domyślnego dashboardu: "/lovelace/").
+# 4. Zamień encje oznaczone ZMIEŃ na swoje (nazwy encji są tu tylko przykładowe).
+#
+# Jak to działa:
+# - kafelek z encją + tap_action navigate  = podsumowanie (stan encji = podpis i kolor kafelka),
+# - przycisk bez encji + tap_action navigate = kafelek obszaru,
+# - widoki z "subview: true" nie mają zakładki, otwiera się je kafelkiem (w aplikacji TV: OK, wstecz: RETURN).
+# - kafelek robi się czerwony w aplikacji TV, gdy encja ma device_class safety/problem/smoke/gas... i stan "on".
+title: Dom
+views:
+  # ---------------------------------------------------------------- widok główny
+  - title: Przegląd
+    path: przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Podsumowania"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_grupa_swiatel
+            name: "Światła"
+            icon: mdi:lightbulb-group
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/swiatla
+          - type: tile
+            entity: sensor.zmien_srednia_temperatura
+            name: "Klimat"
+            icon: mdi:thermometer
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/klimat
+          - type: tile
+            entity: binary_sensor.zmien_bezpieczenstwo
+            name: "Bezpieczeństwo"
+            icon: mdi:shield-home
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/bezpieczenstwo
+          - type: tile
+            entity: media_player.zmien_glowny_odtwarzacz
+            name: "Odtwarzacze"
+            icon: mdi:speaker
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/odtwarzacze
+          - type: tile
+            entity: weather.zmien_pogoda
+            name: "Pogoda"
+      - cards:
+          - type: heading
+            heading: "Obszary"
+            heading_style: title
+          - type: button
+            name: "Biuro"
+            icon: mdi:desk
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/obszar-biuro
+          - type: button
+            name: "Garaż"
+            icon: mdi:garage
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/obszar-garaz
+          - type: button
+            name: "Kuchnia"
+            icon: mdi:silverware-fork-knife
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/obszar-kuchnia
+          - type: button
+            name: "Łazienka górna"
+            icon: mdi:shower
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/obszar-lazienka-gorna
+          - type: button
+            name: "Ogród"
+            icon: mdi:flower
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/obszar-ogrod
+          - type: button
+            name: "Pokój Olka"
+            icon: mdi:bed
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/obszar-pokoj-olka
+          - type: button
+            name: "Przedpokój góra"
+            icon: mdi:door
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/obszar-przedpokoj-gora
+          - type: button
+            name: "Salon"
+            icon: mdi:sofa
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/obszar-salon
+          - type: button
+            name: "Sypialnia"
+            icon: mdi:bed-king
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/obszar-sypialnia
+          - type: button
+            name: "Wejście"
+            icon: mdi:door-open
+            show_name: true
+            show_icon: true
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-dom/obszar-wejscie
+  # ---------------------------------------------------------------- podwidok: Światła
+  - title: "Światła"
+    path: swiatla
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Kuchnia"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_kuchnia_punkty
+            name: "Punkty"
+          - type: tile
+            entity: light.zmien_kuchnia_stol
+            name: "Stół"
+      - cards:
+          - type: heading
+            heading: "Salon"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_choinka
+            name: "Choinka"
+          - type: tile
+            entity: light.zmien_lampa_stojaca
+            name: "Lampa stojąca"
+          - type: tile
+            entity: light.zmien_salon_punkt_1
+            name: "Punkt 1"
+          - type: tile
+            entity: light.zmien_salon_punkt_2
+            name: "Punkt 2"
+          - type: tile
+            entity: light.zmien_salon_punkt_3
+            name: "Punkt 3"
+          - type: tile
+            entity: light.zmien_salon_punkt_mocny_1
+            name: "Punkt mocny 1"
+          - type: tile
+            entity: light.zmien_salon_punkt_mocny_2
+            name: "Punkt mocny 2"
+      - cards:
+          - type: heading
+            heading: "Wejście"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_wejscie
+            name: "Wejście"
+  # ---------------------------------------------------------------- podwidok: Klimat
+  - title: "Klimat"
+    path: klimat
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Biuro"
+            heading_style: title
+          - type: tile
+            entity: sensor.zmien_temp_biuro
+            name: "Biuro"
+      - cards:
+          - type: heading
+            heading: "Garaż"
+            heading_style: title
+          - type: tile
+            entity: sensor.zmien_temp_garaz
+            name: "Garaż"
+      - cards:
+          - type: heading
+            heading: "Kuchnia"
+            heading_style: title
+          - type: tile
+            entity: sensor.zmien_temp_kuchnia
+            name: "Kuchnia"
+      - cards:
+          - type: heading
+            heading: "Ogród"
+            heading_style: title
+          - type: tile
+            entity: sensor.zmien_temp_ogrod
+            name: "Ogród"
+  # ---------------------------------------------------------------- podwidok: Bezpieczeństwo
+  - title: "Bezpieczeństwo"
+    path: bezpieczenstwo
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Kuchnia"
+            heading_style: title
+          - type: tile
+            entity: binary_sensor.zmien_czujnik_gazu
+            name: "Czujnik gazu"
+      - cards:
+          - type: heading
+            heading: "Ogród"
+            heading_style: title
+          - type: tile
+            entity: binary_sensor.zmien_brama_ogrodowa
+            name: "Brama ogrodowa"
+          - type: tile
+            entity: camera.zmien_dach
+            name: "Dach"
+          - type: tile
+            entity: binary_sensor.zmien_furtka
+            name: "Furtka"
+      - cards:
+          - type: heading
+            heading: "Wejście"
+            heading_style: title
+          - type: tile
+            entity: camera.zmien_podjazd
+            name: "Podjazd"
+  # ---------------------------------------------------------------- podwidok: Odtwarzacze
+  - title: "Odtwarzacze"
+    path: odtwarzacze
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Salon"
+            heading_style: title
+          - type: tile
+            entity: media_player.zmien_tv_salon
+            name: "TV Salon"
+      - cards:
+          - type: heading
+            heading: "Bez obszaru"
+            heading_style: title
+          - type: tile
+            entity: media_player.zmien_canal_plus
+            name: "CANAL PLUS BOX"
+          - type: tile
+            entity: media_player.zmien_google_home
+            name: "Google Home"
+          - type: tile
+            entity: media_player.zmien_kuchnia_salon_taras
+            name: "Kuchnia, Salon, Taras"
+          - type: tile
+            entity: media_player.zmien_kuchnia_taras
+            name: "Kuchnia+Taras"
+          - type: tile
+            entity: media_player.zmien_radio_kuchnia
+            name: "Radio w kuchni"
+          - type: tile
+            entity: media_player.zmien_salon_kuchnia
+            name: "Salon+Kuchnia"
+          - type: tile
+            entity: media_player.zmien_taras
+            name: "Taras"
+  # ---------------------------------------------------------------- podwidok: Biuro
+  - title: "Biuro"
+    path: obszar-biuro
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Biuro"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_biuro
+            name: "Przykładowe światło"
+  # ---------------------------------------------------------------- podwidok: Garaż
+  - title: "Garaż"
+    path: obszar-garaz
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Garaż"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_garaz
+            name: "Przykładowe światło"
+  # ---------------------------------------------------------------- podwidok: Kuchnia
+  - title: "Kuchnia"
+    path: obszar-kuchnia
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Kuchnia"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_kuchnia
+            name: "Przykładowe światło"
+  # ---------------------------------------------------------------- podwidok: Łazienka górna
+  - title: "Łazienka górna"
+    path: obszar-lazienka-gorna
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Łazienka górna"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_lazienka_gorna
+            name: "Przykładowe światło"
+  # ---------------------------------------------------------------- podwidok: Ogród
+  - title: "Ogród"
+    path: obszar-ogrod
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Ogród"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_ogrod
+            name: "Przykładowe światło"
+  # ---------------------------------------------------------------- podwidok: Pokój Olka
+  - title: "Pokój Olka"
+    path: obszar-pokoj-olka
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Pokój Olka"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_pokoj_olka
+            name: "Przykładowe światło"
+  # ---------------------------------------------------------------- podwidok: Przedpokój góra
+  - title: "Przedpokój góra"
+    path: obszar-przedpokoj-gora
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Przedpokój góra"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_przedpokoj_gora
+            name: "Przykładowe światło"
+  # ---------------------------------------------------------------- podwidok: Salon
+  - title: "Salon"
+    path: obszar-salon
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Salon"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_salon
+            name: "Przykładowe światło"
+  # ---------------------------------------------------------------- podwidok: Sypialnia
+  - title: "Sypialnia"
+    path: obszar-sypialnia
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Sypialnia"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_sypialnia
+            name: "Przykładowe światło"
+  # ---------------------------------------------------------------- podwidok: Wejście
+  - title: "Wejście"
+    path: obszar-wejscie
+    subview: true
+    back_path: /dashboard-dom/przeglad
+    type: sections
+    max_columns: 1
+    sections:
+      - cards:
+          - type: heading
+            heading: "Wejście"
+            heading_style: title
+          - type: tile
+            entity: light.zmien_wejscie
+            name: "Przykładowe światło"

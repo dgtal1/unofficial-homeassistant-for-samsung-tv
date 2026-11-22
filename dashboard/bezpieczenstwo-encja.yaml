@@ -1,0 +1,23 @@
+# Czujnik zbiorczy dla kafelka "Bezpieczeństwo" (configuration.yaml, sekcja `template:`;
+# jeśli sekcja już istnieje, dopisz tylko element z listy `binary_sensor`).
+# Stan "on" = coś jest otwarte lub wykryto gaz -> kafelek w aplikacji TV robi się czerwony
+# (device_class: safety, podpis "Zagrożenie"; stan "off" -> "Bezpiecznie").
+# Ruch (neocc_ruch1) i kamery celowo nie są brane pod uwagę - to nie alarm.
+template:
+  - binary_sensor:
+      - name: "Bezpieczeństwo"
+        unique_id: bezpieczenstwo_podsumowanie
+        device_class: safety
+        state: >
+          {{ expand('binary_sensor.czujnik_gazu_gaz', 'binary_sensor.brama_otwarta',
+                    'binary_sensor.furtka_otwarta', 'binary_sensor.brama_garazowa')
+             | selectattr('state', 'eq', 'on') | list | count > 0 }}
+        attributes:
+          aktywne: >
+            {{ expand('binary_sensor.czujnik_gazu_gaz', 'binary_sensor.brama_otwarta',
+                      'binary_sensor.furtka_otwarta', 'binary_sensor.brama_garazowa')
+               | selectattr('state', 'eq', 'on') | map(attribute='name') | list }}
+# Nową encję do listy dodajesz w obu miejscach (state i aktywne).
+# Po zapisaniu: Narzędzia deweloperskie -> YAML -> Przeładuj szablony encji (bez restartu).
+# Encja: binary_sensor.bezpieczenstwo - wpisz ją w kafelku "Bezpieczeństwo" w widoku Przegląd
+# zamiast binary_sensor.zmien_bezpieczenstwo.
