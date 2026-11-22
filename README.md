@@ -1,4 +1,5 @@
 **English** | [Polski](README.pl.md)
+![Home – widok główny](screen1.png)
 
 # Home – Home Assistant TV client for Samsung Tizen
 
