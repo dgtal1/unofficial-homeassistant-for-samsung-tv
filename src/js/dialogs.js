@@ -96,10 +96,10 @@
   var choice = null;   // { onClose } while the picker overlay is used as a generic choice list
 
   // Generic list of choices (e.g. light effects). items: [{ title, value }]; onPick(value)
-  Dlg.openChoice = function (title, items, current, onPick, onClose) {
+  Dlg.openChoice = function (title, items, current, onPick, onClose, sub) {
     choice = { onClose: onClose };
     pickerEl.querySelector('.dname').textContent = title;
-    subEl.textContent = '';
+    subEl.textContent = sub || '';
     listEl.innerHTML = '';
     listEl.scrollTop = 0;
     var focusRow = null;

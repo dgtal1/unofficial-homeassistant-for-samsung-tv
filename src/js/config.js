@@ -26,6 +26,10 @@ window.HA_CONFIG = {
   //   "prefix*"                  every id starting with prefix
   //   "title:fragment"           title contains the fragment (case-insensitive)
   notificationsIgnore: ["http-login"],
+  // false (default): the notification list is read only.
+  // true: each notification gets a × button (RIGHT, then OK) and the list has "Dismiss all"; both ask for
+  //       confirmation. Dismissing removes the notification in Home Assistant too (needs a user allowed to call the service).
+  notificationsDismiss: true,
   // Play the notification sound when a new notification arrives
   notificationSound: true,
 

@@ -40,6 +40,7 @@
     if (!el) { updateRing(null); return; }
     el.classList.add('focused');
     if (el.classList.contains('pick-row') || el.classList.contains('nt-row')) HAT.dialogs.ensureRowVisible(el);
+    else if (el.classList.contains('nt-x')) HAT.dialogs.ensureRowVisible(el.parentNode);
     if (isTab(el)) {
       if (el._tabIdx !== UI.activeIdx()) UI.selectView(el._tabIdx);
       UI.ensureTabVisible(el);
@@ -179,6 +180,8 @@
       var score = prim + sec * 2.5;
       if (score < bestScore) { bestScore = score; best = n; }
     }
+    // Notifications: DOWN from the list lands on "Dismiss all" (the first footer button), not on "Close"
+    if (UI.layer === 'notifs' && dir === 'down' && best && best.id === 'nt-close' && current.id !== 'nt-all') best = document.getElementById('nt-all');
     if (UI.layer === 'main' && dir === 'up' && isTile(current)) {
       // Going up from a tile reaches the tab bar only through the active tab
       if (!best || !isTile(best)) best = activeTab() || best;

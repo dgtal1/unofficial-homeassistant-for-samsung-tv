@@ -1,10 +1,12 @@
-// HA persistent notifications: read only list behind a bell in the top bar
+// HA persistent notifications: list behind a bell in the top bar (read only unless notificationsDismiss is on)
 (function (w) {
   var HAT = w.HAT = w.HAT || {};
   var U = HAT.util, UI = HAT.ui;
   var N = HAT.notify = {};
 
-  var client, cfg, bellEl, icoEl, badgeEl, overlayEl, listEl, subEl, openHint;
+  var client, cfg, bellEl, icoEl, badgeEl, overlayEl, listEl, subEl, openHint, disHint, footEl, allBtn, closeBtn;
+  var dismissOn = false;         // notificationsDismiss in js/config.js
+  var pendingFocus = null;       // { idx, onX }: where the focus goes after the list is rebuilt
   var items = {};                // id -> { id, title, message, created }
   var known = false;             // first full list received (no sound / animation for it)
   var mode = 'none';             // none | subscribe | poll | failed
@@ -23,6 +25,17 @@
     listEl = overlayEl.querySelector('.nt-list');
     subEl = overlayEl.querySelector('.pick-sub');
     openHint = overlayEl.querySelector('.dh-open');
+    disHint = overlayEl.querySelector('.dh-dis');
+    footEl = overlayEl.querySelector('.nt-foot');
+    allBtn = document.getElementById('nt-all');
+    closeBtn = document.getElementById('nt-close');
+    dismissOn = cfg.notificationsDismiss === true;
+    overlayEl.classList.toggle('nt-dismiss', dismissOn);
+    allBtn._act = function () {
+      var vis = visible();
+      if (vis.length) confirm('notifs.confirmAll', HAT.t('notifs.confirmAllSub', vis.length), vis, allBtn);
+    };
+    closeBtn._act = function () { N.close(); };
     overlayEl.querySelector('.dh-ico').innerHTML = HAT.iconSvg('back');
     icoEl.innerHTML = HAT.iconSvg('bell');
     bellEl._act = function () { N.open(); };
@@ -154,10 +167,13 @@
 
   function render(vis) {
     vis = vis || visible();
-    var prevId = HAT.nav.current() && HAT.nav.current()._nid, focusRow = null, i;
+    var cur = HAT.nav.current(), prevOnX = !!(cur && cur.classList && cur.classList.contains('nt-x'));
+    var prevId = cur && (prevOnX ? cur.parentNode._nid : cur._nid), focusRow = null, i;
     listEl.innerHTML = '';
     listEl.scrollTop = 0;
-    subEl.textContent = vis.length ? HAT.t('notifs.readOnly', vis.length) : '';
+    subEl.textContent = vis.length ? HAT.t(dismissOn ? 'notifs.count' : 'notifs.readOnly', vis.length) : '';
+    footEl.style.display = dismissOn && vis.length ? 'flex' : 'none';
+    disHint.style.display = dismissOn && vis.length ? '' : 'none';
     if (!vis.length) {
       listEl.appendChild(U.el('div', 'nt-empty', HAT.t('notifs.empty')));
       openHint.style.display = 'none';
@@ -165,6 +181,8 @@
       return;
     }
     openHint.style.display = '';
+    allBtn.textContent = HAT.t('notifs.dismissAll', vis.length);
+    allBtn.classList.add('danger');
     for (i = 0; i < vis.length; i++) {
       (function (it) {
         var row = U.el('div', 'nt-row focusable');
@@ -175,11 +193,67 @@
         row.appendChild(U.el('div', 'nt-msg', plain(it.message)));
         row._nid = it.id;
         row._act = function () { row.classList.toggle('open'); HAT.nav.refreshRing(); };
+        if (dismissOn) {
+          // Cross button on the right of the row: RIGHT moves onto it, OK asks for confirmation
+          var x = U.el('div', 'nt-x focusable');
+          x.innerHTML = HAT.iconSvg('cross');
+          x._act = function () { confirm('notifs.confirmOne', HAT.t('notifs.confirmOneSub', it.title || HAT.t('notifs.untitled')), [it], x); };
+          row._x = x;
+          row.appendChild(x);
+        }
         listEl.appendChild(row);
-        if (it.id === prevId) focusRow = row;
+        if (it.id === prevId) focusRow = (prevOnX && row._x) || row;
       })(vis[i]);
     }
+    if (pendingFocus) {
+      // After a dismissal: stay at the same position in the list
+      var rows = listEl.querySelectorAll('.nt-row');
+      focusRow = rows[Math.min(pendingFocus.idx, rows.length - 1)];
+      if (focusRow && pendingFocus.onX && focusRow._x) focusRow = focusRow._x;
+      pendingFocus = null;
+    }
     HAT.nav.focus(focusRow || listEl.querySelector('.nt-row'));
+  }
+
+  // ---- dismissing (only with notificationsDismiss: true) ----------------------
+  // Confirmation dialog: the generic choice list of the dialogs module with two answers
+  function confirm(titleKey, sub, list, back) {
+    HAT.dialogs.openChoice(HAT.t(titleKey), [
+      { title: HAT.t('notifs.dismiss'), value: 'yes' },
+      { title: HAT.t('common.cancel'), value: 'no' }
+    ], null, function (v) {
+      if (v === 'yes') dismiss(list, back);
+    }, function () {
+      UI.layer = 'notifs';
+      if (document.body.contains(back)) HAT.nav.focus(back); else render();
+    }, sub);
+  }
+
+  function dismiss(list, from) {
+    var left = list.length, failed = 0, lastErr = '', i;
+    var row = from.classList.contains('nt-x') ? from.parentNode : from;
+    var rows = listEl.querySelectorAll('.nt-row'), idx = 0;
+    for (i = 0; i < rows.length; i++) if (rows[i] === row) idx = i;
+    pendingFocus = list.length > 1 ? null : { idx: idx, onX: from.classList.contains('nt-x') };
+    function done() {
+      if (--left > 0) return;
+      if (mode === 'poll') poll();
+      changed(false);
+      if (failed) HAT.ui.toast(HAT.t('notifs.dismissFailed', lastErr), 3500);
+      else HAT.ui.toast(list.length > 1 ? HAT.t('notifs.dismissedAll', list.length) : HAT.t('notifs.dismissed', list[0].title || HAT.t('notifs.untitled')), 2500);
+    }
+    for (i = 0; i < list.length; i++) {
+      (function (it) {
+        client.callService('persistent_notification', 'dismiss', { notification_id: it.id }).then(function () {
+          delete items[it.id];
+          done();
+        }, function (e) {
+          failed++;
+          lastErr = (e && (e.message || e.code)) || HAT.t('common.error');
+          done();
+        });
+      })(list[i]);
+    }
   }
 
   N.open = function () {
