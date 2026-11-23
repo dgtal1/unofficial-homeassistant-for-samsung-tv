@@ -1,8 +1,11 @@
 **English** | [Polski](README.pl.md)
+
 <a href="http://www.youtube.com/watch?v=amMd0X906ZA" target="_blank" rel="noopener noreferrer">
   <img src="https://img.youtube.com/vi/amMd0X906ZA/maxresdefault.jpg" alt="Unofficial Home Assistant Client for Samsung TV (tizen OS)" width="100%" />
 </a>
+
 [Watch demo: Unofficial Home Assistant Client for Samsung TV (tizen OS)](http://www.youtube.com/watch?v=amMd0X906ZA)
+
 # Home – Home Assistant TV client for Samsung Tizen
 
 A native Tizen web app (plain HTML/CSS/JS, no framework) with an Apple Home style
@@ -127,6 +130,12 @@ The bell in the top bar (next to the settings gear) shows HA persistent notifica
 read only: OK opens the list, OK on an item expands / collapses its text, Back closes it. A red dot with a counter
 appears and disappears with an animation; a new notification rings the bell and plays a sound
 (`src/sound/notify.wav`, can be turned off with `notificationSound: false` in `js/config.js`).
+
+By default the list is read only. With `notificationsDismiss: true` in `js/config.js` every notification gets a × button
+(RIGHT moves onto it, OK asks for confirmation) and the list ends with a **Dismiss all** button (also confirmed). The list
+scrolls with the focus (UP / DOWN) and the buttons below it stay on screen. Dismissing removes the notification in Home
+Assistant too, so it needs a token user that may call the `persistent_notification.dismiss` service; hidden notifications
+(`notificationsIgnore`) are never dismissed.
 
 Notifications are hidden with the `notificationsIgnore` list in `js/config.js`: `"id"`, `"prefix*"` or
 `"title:part of the title"`. Diagnostics shows the state of the notification connection and the IDs of hidden ones.

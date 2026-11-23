@@ -1,5 +1,11 @@
 [English](README.md) | **Polski**
 
+<a href="http://www.youtube.com/watch?v=amMd0X906ZA" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.youtube.com/vi/amMd0X906ZA/maxresdefault.jpg" alt="Nieoficjalny klient Home Assistant dla telewizorów Samsung (Tizen OS)" width="100%" />
+</a>
+
+[Zobacz demo: nieoficjalny klient Home Assistant dla telewizorów Samsung (Tizen OS)](http://www.youtube.com/watch?v=amMd0X906ZA)
+
 # Home – klient Home Assistant dla telewizorów Samsung (Tizen)
 
 Natywna aplikacja webowa Tizen (czysty HTML/CSS/JS, bez frameworka) w stylu Apple Home.
@@ -124,6 +130,12 @@ Dzwonek w górnym pasku (obok zębatki) pokazuje powiadomienia trwałe z HA (`pe
 tylko do odczytu: OK otwiera listę, OK na pozycji rozwija / zwija treść, Cofnij zamyka. Czerwona kropka z licznikiem
 pojawia się i znika z animacją, a nowe powiadomienie porusza dzwonkiem i odtwarza dźwięk
 (`src/sound/notify.wav`, można wyłączyć: `notificationSound: false` w `js/config.js`).
+
+Domyślnie lista jest tylko do odczytu. Po ustawieniu `notificationsDismiss: true` w `js/config.js` każde powiadomienie
+ma przycisk × (strzałka w prawo przechodzi na niego, OK pyta o potwierdzenie), a pod listą jest przycisk **Odrzuć wszystkie**
+(też z potwierdzeniem). Lista przewija się razem z fokusem (góra / dół), a przyciski pod nią zawsze zostają na ekranie.
+Odrzucenie usuwa powiadomienie także w Home Assistant, więc użytkownik tokenu musi mieć prawo do usługi
+`persistent_notification.dismiss`; ukryte powiadomienia (`notificationsIgnore`) nigdy nie są odrzucane.
 
 Powiadomienia ukrywa się listą `notificationsIgnore` w `js/config.js`: `"id"`, `"prefiks*"` lub
 `"title:fragment tytułu"`. W diagnostyce widać stan połączenia z powiadomieniami oraz ID ukrytych.
