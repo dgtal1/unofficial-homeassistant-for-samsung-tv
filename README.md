@@ -142,9 +142,13 @@ Notifications are hidden with the `notificationsIgnore` list in `js/config.js`: 
 If the subscription does not work for the token's user, the app reads the list every 30 s; if that fails too,
 the bell is hidden.
 
-## Not verified on a real TV / real HA
+## Tested on a real TV
 
-- The `lovelace/config` command and the `lovelace_updated` event were written from the
-  HA frontend's known behaviour; tested only against a mock server.
-- Key codes (Return = 10009, Info = 457) follow Tizen docs; confirm on the TV.
-- Animation smoothness on the TV CPU.
+Tested on a Samsung S95B (Tizen 6.5) with a real Home Assistant: loading and live reloading of the dashboard,
+remote control keys (Return, Info / long OK), animations and page transitions, the Simple Glass style, the dashboard
+picker (`allowDashboardChange`), notifications (list, sound) and dismissing them (`notificationsDismiss`), and the generated
+dashboards for a non-admin token user.
+
+Not verified yet:
+
+- Light colours and effects on a real device with effects (e.g. Twinkly); tested only against a mock server.

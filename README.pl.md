@@ -142,9 +142,13 @@ Powiadomienia ukrywa się listą `notificationsIgnore` w `js/config.js`: `"id"`,
 Jeśli subskrypcja nie działa dla użytkownika tokenu, aplikacja czyta listę co 30 s, a gdy i to się nie uda,
 dzwonek jest ukryty.
 
-## Niezweryfikowane na prawdziwym TV / prawdziwym HA
+## Przetestowane na prawdziwym TV
 
-- Komenda `lovelace/config` i zdarzenie `lovelace_updated` zostały napisane na podstawie znanego zachowania
-  frontu HA; testowane tylko na serwerze testowym (mocku).
-- Kody klawiszy (Return = 10009, Info = 457) wynikają z dokumentacji Tizen; potwierdź na TV.
-- Płynność animacji na procesorze TV.
+Przetestowane na Samsungu S95B (Tizen 6.5) z prawdziwym Home Assistantem: wczytywanie i automatyczne przeładowanie
+dashboardu, klawisze pilota (Return, Info / przytrzymanie OK), animacje i przejścia między widokami, styl Simple Glass,
+wybór dashboardu (`allowDashboardChange`), powiadomienia (lista, dźwięk) i ich odrzucanie (`notificationsDismiss`) oraz
+dashboardy generowane w aplikacji dla użytkownika tokenu bez uprawnień administratora.
+
+Jeszcze niezweryfikowane:
+
+- Kolory i efekty światła na prawdziwym urządzeniu z efektami (np. Twinkly); testowane tylko na serwerze testowym (mocku).
