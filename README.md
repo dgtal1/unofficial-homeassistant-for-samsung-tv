@@ -1,5 +1,9 @@
 **English** | [Polski](README.pl.md)
-![Home – widok główny](screen1.png)
+<a href="http://www.youtube.com/watch?v=amMd0X906ZA" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.youtube.com/vi/amMd0X906ZA/maxresdefault.jpg" alt="Unofficial Home Assistant Client for Samsung TV (tizen OS)" width="100%" />
+</a>
+[Watch demo: Unofficial Home Assistant Client for Samsung TV (tizen OS)](http://www.youtube.com/watch?v=amMd0X906ZA)
+
 # Home – Home Assistant TV client for Samsung Tizen
 
 A native Tizen web app (plain HTML/CSS/JS, no framework) with an Apple Home style
