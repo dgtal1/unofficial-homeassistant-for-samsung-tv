@@ -49,12 +49,16 @@
 
   // Dashboard assigned to the token's user in the HA profile (server side: frontend/get_user_data, key "core").
   // { found: bool, path: url_path or null (null = the default dashboard) }
-  var profile = { found: false, path: null, raw: null, state: 'nieznany' };
+  var profile = { found: false, path: null, raw: null, state: '?' };
+
+  // The dashboard picker is available in the emulator / browser, and on a real TV only when
+  // js/config.js sets allowDashboardChange: true (off by default).
+  function canPick() { return !device.tv || cfg.allowDashboardChange === true; }
 
   // Dashboard in use: profile dashboard of the user, then js/config.js.
-  // Emulator / browser: a choice saved from the picker wins over both. A real TV never uses the saved choice.
+  // When the picker is available, a choice saved from it wins over both. Otherwise the saved choice is ignored.
   function currentDashboard() {
-    if (!device.tv && settings.has('dashboard')) return settings.get('dashboard') || null;
+    if (canPick() && settings.has('dashboard')) return settings.get('dashboard') || null;
     if (profile.found) return profile.path;
     return cfg.dashboard || null;
   }
@@ -122,7 +126,7 @@
     HAT.notify.init(client, cfg);
     HAT.nav.init(cfg, onBack);
     HAT.dialogs.init({
-      canPickDashboard: function () { return !device.tv; },
+      canPickDashboard: canPick,
       dashboardLabel: dashboardLabel,
       currentDashboard: currentDashboard,
       listDashboards: listDashboards,
@@ -408,7 +412,7 @@
       ['Home Assistant', client.haVersion || '—'],
       [HAT.t('dg.connection'), client.status + ' · ' + client.url],
       [HAT.t('dg.entities'), String(store.count())],
-      [HAT.t('dg.mode'), device.tv ? HAT.t('dg.modeTv') : (device.emulator ? HAT.t('dg.modeEmu') : (w.tizen ? 'Tizen' : HAT.t('dg.modeBrowser')))],
+      [HAT.t('dg.mode'), device.tv ? HAT.t(cfg.allowDashboardChange === true ? 'dg.modeTvPick' : 'dg.modeTv') : (device.emulator ? HAT.t('dg.modeEmu') : (w.tizen ? 'Tizen' : HAT.t('dg.modeBrowser')))],
       [HAT.t('dg.profileDash'), profile.state],
       [HAT.t('dg.selectedDash'), dashboardLabel() + (settings.isPersistent() ? '' : HAT.t('dg.noSave'))],
       [HAT.t('dg.layoutSource'), model.source === 'dashboard' ? HAT.t('dg.srcDash') : model.source === 'generated' ? HAT.t('dg.srcGenerated') : HAT.t('dg.srcFallback', (model.fallbackKind || '') + (model.error ? ' – ' + model.error : ''))],

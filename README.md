@@ -1,6 +1,5 @@
 **English** | [Polski](README.pl.md)
 ![Home – widok główny](screen1.png)
-
 # Home – Home Assistant TV client for Samsung Tizen
 
 A native Tizen web app (plain HTML/CSS/JS, no framework) with an Apple Home style
@@ -19,6 +18,7 @@ Edit `src/js/config.js`:
   in the HA profile (`frontend/get_user_data`, key `core`, field `default_panel`). On a real TV the picker is hidden and
   that profile dashboard is always used. In the emulator (detected from the product model / systeminfo) and in a desktop
   browser the picker is available (gear icon -> Dashboard) and a saved choice wins over the profile.
+- `allowDashboardChange`: `false` by default; set `true` to show the dashboard picker on a real TV too.
 - `columns`, `tapOpensDetails`, `longPressMs`: optional tuning.
 - `notificationsIgnore`, `notificationSound`: notification options (see "Notifications" below).
 

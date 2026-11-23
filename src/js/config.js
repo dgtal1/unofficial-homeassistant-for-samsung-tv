@@ -1,14 +1,18 @@
 // Home Assistant TV - user configuration. This is the only file you need to edit.
 window.HA_CONFIG = {
   // Address of your Home Assistant (no trailing slash)
-  url: "http://192.168.0.100:8123",
+  url: "http://192.168.0.14:8123",
 
   // Long-lived access token: HA profile -> Security -> Long-lived access tokens
-  token: "YOUR_LONG_LIVE_ACCESS_TOKEN",
+  token: "PASTE_YOUR_LONG_LIVED_TOKEN_HERE",
 
   // Dashboard url_path to mirror (null = the default dashboard).
   // On a real TV this dashboard is always used; the emulator / browser can change it in Settings.
   dashboard: "samsung-tv",
+
+  // false (default): on a real TV the dashboard cannot be changed (the Settings row is hidden).
+  // true: show Settings -> Dashboard on the TV too; a choice saved there wins over the profile / "dashboard".
+  allowDashboardChange: false,
 
   // Number of tile columns (4-6 works well on a 1080p layout)
   columns: 5,

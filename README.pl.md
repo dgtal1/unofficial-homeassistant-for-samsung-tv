@@ -19,6 +19,7 @@ Edytuj `src/js/config.js`:
   dashboardu jest ukryty i zawsze używany jest dashboard z profilu. W emulatorze (wykrywanym po modelu produktu /
   systeminfo) i w przeglądarce na komputerze wybór jest dostępny (zębatka -> Dashboard), a zapisany wybór ma
   pierwszeństwo przed profilem.
+- `allowDashboardChange`: domyślnie `false`; ustaw `true`, żeby wybór dashboardu był dostępny także na prawdziwym TV.
 - `columns`, `tapOpensDetails`, `longPressMs`: opcjonalne dostrajanie.
 - `notificationsIgnore`, `notificationSound`: opcje powiadomień (patrz „Powiadomienia” niżej).
 
