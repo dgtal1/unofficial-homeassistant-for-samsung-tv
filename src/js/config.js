@@ -6,12 +6,14 @@ window.HA_CONFIG = {
   // Long-lived access token: HA profile -> Security -> Long-lived access tokens
   token: "PASTE_YOUR_LONG_LIVED_TOKEN_HERE",
 
-  // Dashboard url_path to mirror (null = the default dashboard).
-  // On a real TV this dashboard is always used; the emulator / browser can change it in Settings.
-  dashboard: "samsung-tv",
+  // Dashboard to show: a url_path such as "samsung-tv", or a built-in one ("gen:apple", "gen:ha-home").
+  // null (default) = use the dashboard assigned to the token's user in the HA profile, or the default dashboard.
+  // A value set here always wins over the profile; the emulator / browser (or a TV with allowDashboardChange)
+  // can still override it with a choice saved in Settings.
+  dashboard: null,
 
   // false (default): on a real TV the dashboard cannot be changed (the Settings row is hidden).
-  // true: show Settings -> Dashboard on the TV too; a choice saved there wins over the profile / "dashboard".
+  // true: show Settings -> Dashboard on the TV too; a choice saved there wins over "dashboard" and the profile.
   allowDashboardChange: false,
 
   // Number of tile columns (4-6 works well on a 1080p layout)
@@ -29,7 +31,7 @@ window.HA_CONFIG = {
   // false (default): the notification list is read only.
   // true: each notification gets a × button (RIGHT, then OK) and the list has "Dismiss all"; both ask for
   //       confirmation. Dismissing removes the notification in Home Assistant too (needs a user allowed to call the service).
-  notificationsDismiss: true,
+  notificationsDismiss: false,
   // Play the notification sound when a new notification arrives
   notificationSound: true,
 

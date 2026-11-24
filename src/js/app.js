@@ -59,8 +59,9 @@
   // When the picker is available, a choice saved from it wins over both. Otherwise the saved choice is ignored.
   function currentDashboard() {
     if (canPick() && settings.has('dashboard')) return settings.get('dashboard') || null;
+    if (cfg.dashboard) return cfg.dashboard;       // an explicit config value always beats the HA profile
     if (profile.found) return profile.path;
-    return cfg.dashboard || null;
+    return null;
   }
 
   // Built-in dashboards generated in the app are stored as "gen:<kind>"
@@ -84,6 +85,11 @@
       sc.src = '$WEBAPIS/webapis/webapis.js';
       document.head.appendChild(sc);
     } catch (e) { /* ignore */ }
+  }
+
+  // App version from the Tizen manifest (config.xml); empty outside Tizen
+  function appVersion() {
+    try { return w.tizen.application.getCurrentApplication().appInfo.version || ''; } catch (e) { return ''; }
   }
 
   // Device facts for the diagnostics screen; every source is optional. cb(rows) is always called once.
@@ -405,6 +411,7 @@
     for (var k in model.skipped) if (model.skipped.hasOwnProperty(k)) skipped.push(k + ' ×' + model.skipped[k]);
     var tileCount = UI.entities().length;
     var rows = [
+      [HAT.t('dg.appVersion'), appVersion() || '—'],
       [HAT.t('dg.browser'), chrome ? 'Chromium ' + chrome[1] : HAT.t('common.unknownLc')],
       ['Tizen', tz ? tz[1] : HAT.t('common.unknownLc')],
       [HAT.t('dg.screen'), HAT.t('dg.screenVal', w.innerWidth, w.innerHeight, w.devicePixelRatio || 1)],

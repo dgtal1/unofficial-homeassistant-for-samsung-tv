@@ -19,12 +19,12 @@ Edytuj `src/js/config.js`:
 - `url`: adres Twojego Home Assistanta, np. `http://192.168.0.14:8123`
 - `token`: token długoterminowy (profil HA -> Zabezpieczenia -> Tokeny długoterminowe).
   Nigdy go nie udostępniaj; jest przechowywany wewnątrz aplikacji na telewizorze.
-- `dashboard`: awaryjny url_path dashboardu (domyślnie `"samsung-tv"`; `null` = dashboard domyślny), używany tylko
-  wtedy, gdy w profilu HA użytkownika tokenu nie wskazano dashboardu. Aplikacja czyta dashboard przypisany
-  użytkownikowi w profilu HA (`frontend/get_user_data`, klucz `core`, pole `default_panel`). Na prawdziwym TV wybór
-  dashboardu jest ukryty i zawsze używany jest dashboard z profilu. W emulatorze (wykrywanym po modelu produktu /
-  systeminfo) i w przeglądarce na komputerze wybór jest dostępny (zębatka -> Dashboard), a zapisany wybór ma
-  pierwszeństwo przed profilem.
+- `dashboard`: który dashboard pokazać: url_path, np. `"samsung-tv"`, albo wbudowany (`"gen:apple"`,
+  `"gen:ha-home"`). `null` (domyślnie) = dashboard przypisany użytkownikowi tokenu w profilu HA
+  (`frontend/get_user_data`, klucz `core`, pole `default_panel`), a gdy go nie ma – dashboard domyślny.
+  Wartość wpisana tutaj zawsze ma pierwszeństwo przed profilem. Na prawdziwym TV wybór dashboardu jest ukryty,
+  więc używany jest właśnie ten dashboard. W emulatorze (wykrywanym po modelu produktu / systeminfo) i w przeglądarce
+  na komputerze wybór jest dostępny (zębatka -> Dashboard), a zapisany wybór ma pierwszeństwo przed tym ustawieniem.
 - `allowDashboardChange`: domyślnie `false`; ustaw `true`, żeby wybór dashboardu był dostępny także na prawdziwym TV.
 - `columns`, `tapOpensDetails`, `longPressMs`: opcjonalne dostrajanie.
 - `notificationsIgnore`, `notificationSound`: opcje powiadomień (patrz „Powiadomienia” niżej).
@@ -82,7 +82,7 @@ odtworzyć; aplikacja informuje o tym i pokazuje encje pogrupowane według typu.
 
 ## 6. Diagnostyka
 
-Zębatka (prawy górny róg; z paska zakładek naciśnij w górę) -> Diagnostyka pokazuje wersję silnika webowego (Chromium),
+Zębatka (prawy górny róg; z paska zakładek naciśnij w górę) -> Diagnostyka pokazuje wersję aplikacji, wersję silnika webowego (Chromium),
 wersję Tizen, rozmiar ekranu, wersję HA, połączenie, pominięte karty i licznik klatek. Użyj jej w emulatorze i na TV.
 Lista przewija się strzałkami góra/dół (przyciski pod nią zawsze zostają na ekranie).
 
@@ -152,3 +152,10 @@ dashboardy generowane w aplikacji dla użytkownika tokenu bez uprawnień adminis
 Jeszcze niezweryfikowane:
 
 - Kolory i efekty światła na prawdziwym urządzeniu z efektami (np. Twinkly); testowane tylko na serwerze testowym (mocku).
+
+## Wersjonowanie
+
+Aplikacja stosuje [Semantic Versioning](https://semver.org/lang/pl/). Wersja jest zapisana w jednym miejscu, w atrybucie
+`version` elementu `<widget>` w `src/config.xml`; ekran diagnostyki odczytuje ją z manifestu Tizen („Wersja aplikacji”;
+w przeglądarce na komputerze, gdzie nie ma manifestu, widać „—”). Zmiany są opisane w [CHANGELOG.md](CHANGELOG.md).
+Przy wydaniu zmień `version` w `config.xml`, dopisz sekcję w changelogu i otaguj commit (np. `v1.0.0`).

@@ -19,11 +19,12 @@ Edit `src/js/config.js`:
 - `url`: address of your Home Assistant, e.g. `http://192.168.0.14:8123`
 - `token`: long-lived access token (HA profile -> Security -> Long-lived access tokens).
   Never share it; it is stored inside the app on your TV.
-- `dashboard`: fallback dashboard url_path (`"samsung-tv"` by default; `null` = the default dashboard), used only
-  when the HA profile of the token's user has no dashboard assigned. The app reads the dashboard assigned to the user
-  in the HA profile (`frontend/get_user_data`, key `core`, field `default_panel`). On a real TV the picker is hidden and
-  that profile dashboard is always used. In the emulator (detected from the product model / systeminfo) and in a desktop
-  browser the picker is available (gear icon -> Dashboard) and a saved choice wins over the profile.
+- `dashboard`: which dashboard to show: a url_path such as `"samsung-tv"`, or a built-in one (`"gen:apple"`,
+  `"gen:ha-home"`). `null` (default) = the dashboard assigned to the token's user in the HA profile
+  (`frontend/get_user_data`, key `core`, field `default_panel`), or the default dashboard if none is assigned.
+  A value set here always wins over the profile. On a real TV the picker is hidden, so this is the dashboard used.
+  In the emulator (detected from the product model / systeminfo) and in a desktop browser the picker is available
+  (gear icon -> Dashboard) and a saved choice wins over this setting.
 - `allowDashboardChange`: `false` by default; set `true` to show the dashboard picker on a real TV too.
 - `columns`, `tapOpensDetails`, `longPressMs`: optional tuning.
 - `notificationsIgnore`, `notificationSound`: notification options (see "Notifications" below).
@@ -81,8 +82,8 @@ cannot be mirrored; the app tells you and shows entities grouped by type instead
 
 ## 6. Diagnostics
 
-The gear icon (top right; from the tab bar press Up) -> Diagnostics shows the web engine version (Chromium), Tizen version,
-screen size, HA version, connection, skipped cards and a frame counter. Use it in the emulator and on the TV.
+The gear icon (top right; from the tab bar press Up) -> Diagnostics shows the app version, the web engine version (Chromium),
+Tizen version, screen size, HA version, connection, skipped cards and a frame counter. Use it in the emulator and on the TV.
 The list scrolls with Up / Down (the buttons below it always stay on screen).
 
 ## 7. Built-in dashboards (generated in the app)
@@ -152,3 +153,10 @@ dashboards for a non-admin token user.
 Not verified yet:
 
 - Light colours and effects on a real device with effects (e.g. Twinkly); tested only against a mock server.
+
+## Versioning
+
+The app follows [Semantic Versioning](https://semver.org/). The version lives in one place, the `version` attribute of
+`<widget>` in `src/config.xml`; the diagnostics screen reads it from the Tizen manifest ("App version"; shown as "—" in a
+desktop browser, where there is no manifest). Changes are listed in [CHANGELOG.md](CHANGELOG.md). When you release, bump
+`version` in `config.xml`, add a section to the changelog and tag the commit (e.g. `v1.0.0`).
